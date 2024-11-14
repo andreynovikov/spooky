@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <string.h>
+/* See https://docs.python.org/3.10/whatsnew/3.10.html#id2 */
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "SpookyV2.h"
 
@@ -27,17 +29,18 @@ static PyObject *
 spooky_hash128_bytes(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *message;
-    int message_length;
+    Py_ssize_t message_size;
     uint64 seed[2] = {0};
 
     static char *kwlist[] = {(char *)"message", (char *)"seed",
         NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|K", kwlist,
-        &message, &message_length, &seed)) {
+        &message, &message_size, &seed)) {
         return NULL;
     }
 
+    int message_length = Py_SAFE_DOWNCAST(message_size, Py_ssize_t, int);
     seed[1] = seed[0];
 
     SpookyHash::Hash128(message, message_length, &seed[0], &seed[1]);
@@ -50,17 +53,18 @@ static PyObject *
 spooky_hash128(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *message;
-    int message_length;
+    Py_ssize_t message_size;
     uint64 seed[2] = {0};
 
     static char *kwlist[] = {(char *)"message", (char *)"seed",
         NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|K", kwlist,
-        &message, &message_length, &seed)) {
+        &message, &message_size, &seed)) {
         return NULL;
     }
 
+    int message_length = Py_SAFE_DOWNCAST(message_size, Py_ssize_t, int);
     seed[1] = seed[0];
 
     SpookyHash::Hash128(message, message_length, &seed[0], &seed[1]);
@@ -73,17 +77,18 @@ static PyObject *
 spooky_hash64(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *message;
-    int message_length;
+    Py_ssize_t message_size;
     uint64 seed[2] = {0};
 
     static char *kwlist[] = {(char *)"message", (char *)"seed",
         NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|K", kwlist,
-        &message, &message_length, &seed)) {
+        &message, &message_size, &seed)) {
         return NULL;
     }
 
+    int message_length = Py_SAFE_DOWNCAST(message_size, Py_ssize_t, int);
     seed[1] = seed[0];
 
     SpookyHash::Hash128(message, message_length, &seed[0], &seed[1]);
@@ -96,17 +101,18 @@ static PyObject *
 spooky_hash32(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *message;
-    int message_length;
+    Py_ssize_t message_size;
     uint64 seed[2] = {0};
 
     static char *kwlist[] = {(char *)"message", (char *)"seed",
         NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|K", kwlist,
-        &message, &message_length, &seed)) {
+        &message, &message_size, &seed)) {
         return NULL;
     }
 
+    int message_length = Py_SAFE_DOWNCAST(message_size, Py_ssize_t, int);
     seed[1] = seed[0];
 
     SpookyHash::Hash128(message, message_length, &seed[0], &seed[1]);
